@@ -1,40 +1,40 @@
-var inFileldLabel = function (labelBlock) {
+var inFileldLabelFn = {
+	checkIfEmpty : function (label, input) {
+		if (input.value) {
+			label.classList.add("label-for-dirty");
+			input.classList.add("is-dirty");
+		} else {
+			label.classList.remove("label-for-dirty");
+			input.classList.remove("is-dirty");
+		}
+	},
+	setFocus     : function (label, input) {
+		label.classList.add("label-focus");
+		input.classList.add("input-focus");
+	},
+	setBlur      : function (label, input) {
+		label.classList.remove("label-focus");
+		input.classList.remove("input-focus");
+	},
+};
+
+
+function inFileldLabel(labelBlock) {
 	var label        = labelBlock.querySelectorAll("label")[0],
-		input        = document.getElementById(label.getAttribute("for")),
-
-		checkIfEmpty = function() {
-			if (input.value) {
-				label.classList.add("label-for-dirty");
-				input.classList.add("is-dirty");
-			} else {
-				label.classList.remove("label-for-dirty");
-				input.classList.remove("is-dirty");
-			}
-		},
-
-		setFocus     = function() {
-			label.classList.add("label-focus");
-			input.classList.add("input-focus");
-		},
-
-		setBlur      = function() {
-			label.classList.remove("label-focus");
-			input.classList.remove("input-focus");
-		};
+		input        = document.getElementById(label.getAttribute("for"));
 
 	input.addEventListener("focus", function () {
-		setFocus();
-		checkIfEmpty();
+		inFileldLabelFn.setFocus(label, input);
+		inFileldLabelFn.checkIfEmpty(label, input);
 	}, false);
 
 	input.addEventListener("blur", function () {
-		setBlur();
-		checkIfEmpty();
+		inFileldLabelFn.setBlur(label, input);
+		inFileldLabelFn.checkIfEmpty(label, input);
 	}, false);
 
-	checkIfEmpty();
-};
-
+	inFileldLabelFn.checkIfEmpty(label, input);
+}
 
 // Document ready function
 function ready(fn) {
