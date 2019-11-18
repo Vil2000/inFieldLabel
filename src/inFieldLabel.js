@@ -1,37 +1,53 @@
+var inFileldLabel = function (labelBlock) {
+	var label = labelBlock.querySelectorAll("label")[0];
+	var input = document.getElementById(label.getAttribute("for"));
+
+	var checkIfEmpty = function() {
+		if (input.value) {
+			label.classList.add("label-for-dirty");
+			input.classList.add("is-dirty");
+		} else {
+			label.classList.remove("label-for-dirty");
+			input.classList.remove("is-dirty");
+		}
+	};
+
+	var setFocus = function() {
+		label.classList.add("label-focus");
+		input.classList.add("input-focus");
+	};
+
+	var setBlur = function() {
+		label.classList.remove("label-focus");
+		input.classList.remove("input-focus");
+	};
 
 
+	input.addEventListener("focus", function () {
+		setFocus();
+		checkIfEmpty();
+	}, false);
 
-function inFileldLabel(labelBlock) {
-	var block = this;
+	input.addEventListener("blur", function () {
+		setBlur();
+		checkIfEmpty();
+	}, false);
 
-	block.label = labelBlock.querySelectorAll("label")[0];
-	block.input = document.getElementById(this.label.getAttribute("for"));
+	checkIfEmpty();
+};
 
-	block.input.addEventListener("focus", function () {
-		block.label.classList.add("label-focus");
-		block.input.classList.add("on-focus");
-	});
 
-	block.input.addEventListener("blur", function () {
-		block.label.classList.remove("label-focus");
-		block.input.classList.remove("on-focus");
-	});
+// Document ready function
+function ready(fn) {
+	if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+		fn();
+	} else {
+		document.addEventListener("DOMContentLoaded", fn);
+	}
 }
 
-
-document.addEventListener("click", function (event) {
-	// Check if label-block or its child clicked
-	var a = event.target;
-
-	while (a != document && !a.classList.contains("label-block")) {
-		a = a.parentNode;
-	}
-
-	if (a != document) {
-		inFileldLabel(a);
-	}
-}, false);
-
-// document.querySelectorAll(".label-block").forEach(function(el) {
-// 	new inFileldLabel(el);
-// });
+ready(function () {
+	document.querySelectorAll(".label-block").forEach(function (el) {
+		inFileldLabel(el);
+	});
+});

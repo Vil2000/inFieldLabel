@@ -2,19 +2,22 @@
 html,
 body	{width:100%; height:100%; margin:0; padding:0; }
 
+input[type="text"] {height: 40px; }
+
 
 .label-block				{position:relative; }
 .label-block label			{display:flex; align-items:center; font-size:1rem; width:100%; height:100%; min-height:100%; padding-left:.75rem; position:absolute; z-index:1; top:0; transition:all .25s ease-in-out; color:rgba(48, 60, 84, 0.56); }
 .label-block_text label		{height:60px; min-height:60px; }
 .label-content				{line-height:1; transition:all .25s ease-in-out; transform-origin:0 0; }
 
-.label-focus				{opacity:.8; }
+.label-focus	                {opacity:.8; }
 .label-block .label-focus,
-.label-block .label-final	{height:1.4rem; min-height:1.4rem; top:0; font-weight:normal; }
+.label-block .label-for-dirty	{height:1.4rem; min-height:1.4rem; top:0; font-weight:normal; }
 .label-focus .label-content,
-.label-final .label-content	{transform:matrix(.77, 0, 0, .77, 0, 0); }
+.label-for-dirty .label-content	{transform:matrix(.77, 0, 0, .77, 0, 0); }
+
 
 input.is-dirty,
-input.on-focus,
+input.input-focus,
 textarea.is-dirty,
-textarea.on-focus	{padding:.875rem .75rem 0; }
+textarea.input-focus	{padding:.875rem .75rem 0; }
