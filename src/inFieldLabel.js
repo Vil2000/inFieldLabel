@@ -1,52 +1,75 @@
-var inFileldLabelFn = {
-	checkIfEmpty : function (label, input) {
-		if (input.value) {
-			label.classList.add("label-for-dirty");
-			input.classList.add("is-dirty");
-		} else {
-			label.classList.remove("label-for-dirty");
-			input.classList.remove("is-dirty");
-		}
-	},
-	setFocus     : function (label, input) {
-		label.classList.add("label-focus");
-		input.classList.add("input-focus");
-	},
-	setBlur      : function (label, input) {
-		label.classList.remove("label-focus");
-		input.classList.remove("input-focus");
-	},
-};
-
-
 function inFileldLabel(labelBlock) {
-	var label        = labelBlock.querySelectorAll("label")[0],
-		input        = document.getElementById(label.getAttribute("for"));
+	//
+	// Variables
+	//
+	var label = labelBlock.querySelector("label"),
+		input = document.getElementById(label.getAttribute("for")),
+		clearBtn = labelBlock.querySelector(".label-block__clear"),
+		timeout = "";
 
+	//
+	// Methods
+	//
+	function checkIfEmpty() {
+		if (input.value) {
+			labelBlock.classList.add("label-block_dirty");
+			if (clearBtn) {
+				clearBtn.classList.remove("hidden");
+			}
+		} else {
+			labelBlock.classList.remove("label-block_dirty");
+			if (clearBtn) {
+				clearBtn.classList.add("hidden");
+			}
+		}
+	}
+
+	function setFocus() {
+		labelBlock.classList.add("label-block_focus");
+	}
+
+	function setBlur() {
+		labelBlock.classList.remove("label-block_focus");
+	}
+
+	function clearInput() {
+		input.value = "";
+		checkIfEmpty();
+	}
+
+
+	//
+	// Inits & Event Listeners
+	//
 	input.addEventListener("focus", function () {
-		inFileldLabelFn.setFocus(label, input);
-		inFileldLabelFn.checkIfEmpty(label, input);
+		setFocus();
+		checkIfEmpty();
 	}, false);
 
 	input.addEventListener("blur", function () {
-		inFileldLabelFn.setBlur(label, input);
-		inFileldLabelFn.checkIfEmpty(label, input);
+		setBlur();
+		checkIfEmpty();
 	}, false);
 
-	inFileldLabelFn.checkIfEmpty(label, input);
-}
+	input.addEventListener("keyup", function () {
+		clearTimeout(timeout);
 
-// Document ready function
-function ready(fn) {
-	if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
-		fn();
-	} else {
-		document.addEventListener("DOMContentLoaded", fn);
-	}
-}
-
-ready(function () {
-	document.querySelectorAll(".label-block").forEach(function (el) {
-		inFileldLabel(el);
+		timeout = setTimeout(function () {
+			checkIfEmpty();
+		}, 500);
 	});
+
+	if (clearBtn) {
+		clearBtn.addEventListener("click", function () {
+			clearInput();
+		});
+	}
+
+	checkIfEmpty();
+
+}
+
+
+document.querySelectorAll(".label-block").forEach(function (el) {
+	inFileldLabel(el);
 });
